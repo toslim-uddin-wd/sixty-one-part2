@@ -1,16 +1,19 @@
-import { useState } from "react"
+import { useReducer, useState } from "react"
 import TaskComponent from "./Task/TaskComponent"
 import { initialTasks } from "./data/initialTasks";
 import { TaskContext } from "./context";
+import TaskReducer from "./Reducer/TaskReducer";
 
 
 function App() {
-  const [tasks, setTasks] = useState(initialTasks());
-  const [taskToEdit, setTaskToEdit] = useState();
-
+  // const [tasks, setTasks] = useState(initialTasks());
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  
+  const [tasks, dispatch] = useReducer(TaskReducer, initialTasks());
+  
   const ProviderValue = {
     tasks: tasks,
-    setTasks: setTasks,
+    dispatch: dispatch,
     taskToEdit: taskToEdit,
     setTaskToEdit: setTaskToEdit,
 }
@@ -28,3 +31,4 @@ export default App
 
 
 
+ 

@@ -4,7 +4,7 @@ import { TaskContext } from "../context";
 
 function TaskForm() {
 
-    const {tasks, setTasks, taskToEdit, setTaskToEdit} =useContext(TaskContext);
+    const {tasks, dispatch, taskToEdit, setTaskToEdit} =useContext(TaskContext);
 
     const [text, setText] = useState();
 
@@ -19,28 +19,35 @@ function TaskForm() {
     const handClick = () => {
         if(taskToEdit) {
             // Updating;
-            setTasks(tasks.map(task => {
-                if(task.id === taskToEdit.id) {
-                  return {
-                    ...taskToEdit,
-                    text: text,
-                  }
-                } else {
-                  return task;
-                }
-              }))
+            dispatch({
+              type: 'UPDATE_TASK',
+              payload: {
+                ...taskToEdit,
+                text: text,
+              },
+            })
+
+            // setTasks(tasks.map(task => {
+            //     if(task.id === taskToEdit.id) {
+            //       return {
+            //         ...taskToEdit,
+            //         text: text,
+            //       }
+            //     } else {
+            //       return task;
+            //     }
+            //   }))
           
               setTaskToEdit(null);
         } else {
-            
-
-            setTasks([
-                ...tasks,
-                {
-                    id: crypto.randomUUID(),
-                    text: text,
+          dispatch({
+                type: 'ADD_TASK',
+                payload: {
+                  id: crypto.randomUUID(),
+                  text: text,
                 }
-              ])
+
+              })
         }
         setText('');
     }
